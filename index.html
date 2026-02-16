@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <!-- 手机适配核心 -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Silentium Cordis</title>
   <style>
@@ -12,43 +11,35 @@
       box-sizing: border-box;
     }
 
-    html,
-    body {
+    html, body {
       width: 100%;
       min-height: 100vh;
       overflow-x: hidden;
     }
 
     body {
-      font-family:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+      background: #000;
       position: relative;
     }
 
-    /* 背景 + 一层柔和暗膜，强化层次感 */
+    /* 背景 */
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: -2;
       background-image: url("../img/index.png");
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       animation: bgFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     body::after {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: -1;
-      background: rgba(0, 0, 0, 0.25); /* 柔和变暗，让文字更立体 */
+      background: rgba(0, 0, 0, 0.25);
       animation: bgFade 1.6s 0.2s cubic-bezier(0.16, 1, 0.36, 1) forwards;
       opacity: 0;
     }
@@ -64,23 +55,15 @@
       top: 0;
       left: 0;
       width: 100%;
-      padding: 24px;
+      padding: 24px 32px;
       z-index: 99;
       opacity: 0;
       animation: logoFade 1s 3s forwards;
     }
-
     @keyframes logoFade {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
     .logo-text {
       font-size: 18px;
       font-weight: 600;
@@ -89,41 +72,35 @@
       text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
 
-    /* 主内容容器 */
-    .main {
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 24px;
-      max-width: 100%;
-      margin: 0 auto;
+    /* 手机版不使用绝对定位，避免重叠 */
+    .container {
       position: relative;
       z-index: 2;
+      width: 100%;
+      min-height: 100vh;
+      padding: 140px 32px 180px;
+      display: flex;
+      flex-direction: column;
+      gap: 60px;
     }
 
-    /* Welcome 超大标题：更强层次感 */
+    /* 标题：电脑大字体，手机自动缩小 */
     #welcome {
-      font-size: clamp(48px, 12vw, 120px);
+      font-size: clamp(50px, 12vw, 120px);
       font-weight: 800;
-      color: #ffffff;
+      color: #fff;
       line-height: 1.1;
-      white-space: nowrap;
-      text-align: left;
       text-shadow:
         0 0 25px rgba(255, 215, 0, 0.5),
         0 12px 25px rgba(0, 0, 0, 0.3),
         0 0 8px rgba(255, 255, 255, 0.3);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: moveToCorner 1s 2s cubic-bezier(0.17, 0.67, 0.3, 1) forwards;
+      opacity: 0;
+      animation: welcomeIn 1.2s 0.5s forwards;
+    }
+    @keyframes welcomeIn {
+      to { opacity: 1; }
     }
 
-    /* 字母逐个亮起 */
     #welcome span {
       opacity: 0;
       animation: letterAppear 0.15s ease forwards;
@@ -132,44 +109,18 @@
       to { opacity: 1; }
     }
 
-    /* 移动到左上角 */
-    @keyframes moveToCorner {
-      to {
-        font-size: clamp(28px, 6vw, 48px);
-        top: 20%;
-        left: 24px;
-        transform: translate(0, 0);
-        text-align: left;
-        text-shadow:
-          0 0 15px rgba(255, 215, 0, 0.4),
-          0 4px 12px rgba(0, 0, 0, 0.2);
-      }
-    }
-
-    /* 两列内容：精致层次感 */
+    /* 内容区域 */
     .info-container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      width: calc(100% - 48px);
+      gap: 60px;
       max-width: 1000px;
-      position: absolute;
-      top: 50%;
-      left: 24px;
-      transform: translateY(-50%);
       opacity: 0;
-      animation: infoFade 0.8s 3.2s ease forwards;
+      animation: infoFade 1s 2.5s forwards;
     }
-
     @keyframes infoFade {
-      from {
-        opacity: 0;
-        transform: translateY(-50%) translateX(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(-50%) translateX(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .info-column {
@@ -178,7 +129,6 @@
       line-height: 1.8;
       text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
     }
-
     .info-column h3 {
       font-size: 22px;
       margin-bottom: 16px;
@@ -188,38 +138,29 @@
         0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    /* 底部导航：玻璃感 + 上浮层次感 */
+    /* 底部导航 */
     .bottom-nav {
       position: fixed;
       left: 50%;
-      bottom: 24px;
+      bottom: 32px;
       transform: translateX(-50%);
       height: 68px;
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(18px);
       border-radius: 22px;
-      padding: 0 20px;
+      padding: 0 32px;
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 24px;
       z-index: 999;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
       opacity: 0;
-      animation: navFade 1s 3.8s forwards;
-      white-space: nowrap;
+      animation: navFade 1s 3.5s forwards;
     }
-
     @keyframes navFade {
-      from {
-        opacity: 0;
-        transform: translateX(-50%) translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
+      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-
     .nav-item {
       width: 50px;
       height: 50px;
@@ -229,12 +170,11 @@
       justify-content: center;
       font-size: 12px;
       font-weight: 500;
-      color: #ffffff;
+      color: #fff;
       text-decoration: none;
       transition: all 0.3s ease;
       flex-shrink: 0;
     }
-
     .nav-item:hover {
       transform: translateY(-2px);
       background: rgba(255, 255, 255, 0.1);
@@ -242,38 +182,22 @@
     }
 
     /* ============================== */
-    /* 👇 手机响应式适配（完全不破坏你原版） */
+    /* 手机响应式（真正不乱） */
     /* ============================== */
     @media (max-width: 768px) {
+      .container {
+        padding: 120px 24px 160px;
+        gap: 40px;
+      }
       .info-container {
         grid-template-columns: 1fr;
-        gap: 32px;
-        top: auto;
-        bottom: 120px;
-        transform: none;
-        width: calc(100% - 32px);
-        left: 16px;
+        gap: 40px;
       }
-
-      #welcome {
-        left: 16px;
-      }
-
-      @keyframes moveToCorner {
-        to {
-          font-size: clamp(24px, 6vw, 36px);
-          top: 18%;
-          left: 16px;
-          transform: translate(0, 0);
-        }
-      }
-
       .bottom-nav {
-        padding: 0 12px;
+        padding: 0 16px;
         gap: 8px;
         height: 62px;
       }
-
       .nav-item {
         width: 44px;
         height: 44px;
@@ -288,34 +212,25 @@
     <div class="logo-text">SILENTIUM CORDIS</div>
   </div>
 
-  <div class="main">
+  <div class="container">
     <h1 id="welcome">Welcome to My World</h1>
-
     <div class="info-container">
       <div class="info-column">
         <h3>Creative Works</h3>
         <p>
-          Explore my collection of front-end development projects, interactive
-          web designs, and digital art pieces. Each work is crafted with
-          attention to detail and a focus on user experience, blending
-          technical skills with artistic vision.
+          Explore my collection of front-end development projects, interactive web designs, and digital art pieces. Each work is crafted with attention to detail and a focus on user experience.
         </p>
         <p>
-          From responsive layouts to smooth animations, every line of code is
-          written to create meaningful and engaging digital experiences.
+          From responsive layouts to smooth animations, every line of code is written to create meaningful and engaging digital experiences.
         </p>
       </div>
       <div class="info-column">
         <h3>Learning & Sharing</h3>
         <p>
-          Discover my learning journey, coding practices, and creative
-          insights. I share my process, challenges, and solutions to help
-          fellow creators and developers grow together.
+          Discover my learning journey, coding practices, and creative insights. I share my process, challenges, and solutions to help fellow creators and developers grow together.
         </p>
         <p>
-          Whether you're here to browse my portfolio, learn new techniques, or
-          connect for collaboration, you'll find inspiration and practical
-          resources to fuel your own creativity.
+          Whether you're here to browse my portfolio, learn new techniques, or connect for collaboration, you'll find inspiration here.
         </p>
       </div>
     </div>
