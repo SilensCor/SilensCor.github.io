@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Silentium Cordis</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+        position: relative;
+      }
+
+      /* 背景 + 一层柔和暗膜，强化层次感 */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background-image: url("../img/index.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        animation: bgFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: rgba(0, 0, 0, 0.25); /* 柔和变暗，让文字更立体 */
+        animation: bgFade 1.6s 0.2s cubic-bezier(0.16, 1, 0.36, 1) forwards;
+        opacity: 0;
+      }
+
+      @keyframes bgFade {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* 顶部 LOGO */
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 32px 48px;
+        z-index: 99;
+        opacity: 0;
+        animation: logoFade 1s 3s forwards;
+      }
+
+      @keyframes logoFade {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .logo-text {
+        font-size: 18px;
+        font-weight: 600;
+        color: #fff;
+        letter-spacing: 1px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+      }
+
+      /* 主内容容器 */
+      .main {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 0 48px;
+        max-width: 100%;
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Welcome 超大标题：更强层次感 */
+      #welcome {
+        font-size: 120px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+        white-space: nowrap;
+        text-align: left;
+        /* 更强的立体光感 + 阴影 */
+        text-shadow:
+          0 0 25px rgba(255, 215, 0, 0.5),
+          0 12px 25px rgba(0, 0, 0, 0.3),
+          0 0 8px rgba(255, 255, 255, 0.3);
+        position: absolute;
+        top: 50%;
+        left: 120px;
+        transform: translate(0, -50%);
+        animation: moveToCorner 1s 2s cubic-bezier(0.17, 0.67, 0.3, 1) forwards;
+      }
+
+      /* 字母逐个亮起 */
+      #welcome span {
+        opacity: 0;
+        animation: letterAppear 0.15s ease forwards;
+      }
+      @keyframes letterAppear {
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* 移动到左上角 */
+      @keyframes moveToCorner {
+        to {
+          font-size: 48px;
+          top: 20%;
+          left: 120px;
+          transform: translate(0, 0);
+          text-align: left;
+          text-shadow:
+            0 0 15px rgba(255, 215, 0, 0.4),
+            0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      /* 两列内容：精致层次感 */
+      .info-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        width: calc(100% - 240px);
+        position: absolute;
+        top: 50%;
+        left: 120px;
+        transform: translateY(-50%);
+        opacity: 0;
+        animation: infoFade 0.8s 3.2s ease forwards;
+      }
+
+      @keyframes infoFade {
+        from {
+          opacity: 0;
+          transform: translateY(-50%) translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(-50%) translateX(0);
+        }
+      }
+
+      .info-column {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 17px;
+        line-height: 1.8;
+        text-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .info-column h3 {
+        font-size: 22px;
+        margin-bottom: 16px;
+        color: #fff;
+        text-shadow:
+          0 0 12px rgba(255, 215, 0, 0.35),
+          0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      /* 底部导航：玻璃感 + 上浮层次感 */
+      .bottom-nav {
+        position: fixed;
+        left: 50%;
+        bottom: 32px;
+        transform: translateX(-50%);
+        height: 68px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(18px);
+        border-radius: 22px;
+        padding: 0 32px;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        z-index: 999;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        opacity: 0;
+        animation: navFade 1s 3.8s forwards;
+      }
+
+      @keyframes navFade {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      .nav-item {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 500;
+        color: #ffffff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item:hover {
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="logo-text">SILENTIUM CORDIS</div>
+    </div>
+
+    <div class="main">
+      <h1 id="welcome">Welcome to My World</h1>
+
+      <div class="info-container">
+        <div class="info-column">
+          <h3>Creative Works</h3>
+          <p>
+            Explore my collection of front-end development projects, interactive
+            web designs, and digital art pieces. Each work is crafted with
+            attention to detail and a focus on user experience, blending
+            technical skills with artistic vision.
+          </p>
+          <p>
+            From responsive layouts to smooth animations, every line of code is
+            written to create meaningful and engaging digital experiences.
+          </p>
+        </div>
+        <div class="info-column">
+          <h3>Learning & Sharing</h3>
+          <p>
+            Discover my learning journey, coding practices, and creative
+            insights. I share my process, challenges, and solutions to help
+            fellow creators and developers grow together.
+          </p>
+          <p>
+            Whether you're here to browse my portfolio, learn new techniques, or
+            connect for collaboration, you'll find inspiration and practical
+            resources to fuel your own creativity.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <a class="nav-item" href="index.html">Home</a>
+      <a class="nav-item" href="practice.html">Practice</a>
+      <a class="nav-item" href="works.html">Works</a>
+      <a class="nav-item" href="art.html">Art</a>
+      <a class="nav-item" href="share.html">Share</a>
+      <a class="nav-item" href="contact.html">Contact</a>
+    </div>
+
+    <script>
+      const el = document.getElementById("welcome");
+      const text = el.textContent;
+      el.innerHTML = "";
+
+      for (let c of text) {
+        const span = document.createElement("span");
+        span.textContent = c;
+        el.appendChild(span);
+      }
+
+      const spans = el.querySelectorAll("span");
+      const mid = Math.floor(spans.length / 2);
+      spans.forEach((span, i) => {
+        const delay = Math.abs(i - mid) * 0.12;
+        span.style.animationDelay = delay + "s";
+      });
+    </script>
+  </body>
+</html>

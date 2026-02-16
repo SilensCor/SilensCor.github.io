@@ -1,0 +1,278 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, serif;
+  position: relative;
+}
+
+/* 背景：丝滑呼吸，不抖动 */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url("../img/index.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation:
+    bgFade 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+    bgBreath 25s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes bgFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes bgBreath {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+/* 顶部LOGO：延迟出现 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 32px 48px;
+  z-index: 99;
+  opacity: 0;
+  animation: logoFade 1s 2.8s forwards;
+}
+
+@keyframes logoFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* 主容器 */
+.main {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 48px;
+  padding-bottom: 120px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* 1. Welcome 大字：核心动画 */
+.main h1 {
+  font-size: 54px; /* 保持大尺寸 */
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0;
+  line-height: 1.1;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* 初始完全透明 */
+  letter-spacing: -2px; /* 初始字间距稍微紧一点 */
+  text-shadow:
+    0 0 12px rgba(255, 215, 0, 0.35),
+    0 0 2px rgba(180, 130, 40, 0.5);
+
+  /* 动画序列：
+     0.2s - 1.0s: 从中间向外慢慢显现（透明度+字间距）
+     1.4s - 2.2s: 从中间移到左上角
+  */
+  animation:
+    welcomeReveal 5s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards,
+    welcomeMove 5s 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* 动画1：从透明到显现，字间距从紧到松，模拟“从中间向外显示” */
+@keyframes welcomeReveal {
+  0% {
+    opacity: 0;
+    letter-spacing: -2px;
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: normal;
+    filter: blur(0);
+  }
+}
+
+/* 动画2：从正中间直接移到左上角 */
+@keyframes welcomeMove {
+  0% {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+  }
+  100% {
+    top: 42%; /* 向上移动 */
+    left: 48px; /* 向左移动 */
+    transform: translate(0, 0);
+    text-align: left;
+    width: auto;
+  }
+}
+
+/* 2. 底下的英文内容：等 Welcome 移好后淡入 */
+.main p {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 520px;
+  line-height: 1.6;
+  text-align: left;
+  position: absolute;
+  top: 52%; /* 在 Welcome 下面 */
+  left: 48px; /* 左对齐 */
+  opacity: 0;
+  transform: translateY(20px);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
+
+  /* 延迟到 Welcome 移好后出现 */
+  animation: subTextFade 0.8s 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes subTextFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 底部导航 */
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%);
+  height: 68px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(22px);
+  border-radius: 22px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  z-index: 999;
+  opacity: 0;
+  animation: navFade 1s 2.6s forwards;
+}
+
+@keyframes navFade {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.nav-item {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.3),
+    rgba(180, 130, 40, 0.2)
+  );
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.nav-item::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: navShine 6s linear infinite;
+  opacity: 0;
+}
+
+.nav-item:hover::after {
+  opacity: 1;
+}
+
+@keyframes navShine {
+  0% {
+    transform: rotate(45deg) translateX(-100%);
+  }
+  100% {
+    transform: rotate(45deg) translateX(100%);
+  }
+}
